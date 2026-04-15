@@ -140,24 +140,57 @@ npm run preview          # serve the production build (search works here)
 
 ---
 
-## Going live (next step — to be filled in)
+## Live on the internet
 
-> _This section will be expanded when we deploy to Vercel._
+- **Production**: https://cihago.com
+- **GitHub repo**: https://github.com/7kfn/cihago (public, branch `main`)
+- **Hosting**: Vercel (Hobby tier)
+- **DNS**: registered at Hover, pointing at Vercel
+- **SSL**: auto-provisioned by Let's Encrypt via Vercel; auto-renews
+- **Vercel default URL** (still active): https://cihago.vercel.app
 
-Outline:
-1. Create a GitHub repo and push.
-2. Connect the repo in Vercel; accept defaults.
-3. Add custom domain in Vercel; update DNS.
-4. Set `site:` in `astro.config.mjs` to the production URL; commit.
-5. Done — every push to `main` deploys.
+## The publish loop
+
+```bash
+# In ~/Code/Cihago
+npm run dev                       # preview locally
+# … edit src/content/blog/<slug>.mdx in VS Code
+npm run check                     # pre-publish audit
+git add -A && git commit -m "post: short title"
+git push                          # Vercel deploys to cihago.com in ~30–45s
+```
+
+Every push to `main` triggers a production deploy. Every pull request
+triggers a **preview deployment** at its own URL — useful for sharing a
+draft with someone before it goes live.
+
+## Useful Vercel things
+
+- **Deployments tab** (in the Vercel project): full log of every
+  deploy, rollback button on each.
+- **Rollback**: hit the `…` next to any prior deployment →
+  *Promote to Production*. Instant, zero-downtime.
+- **Preview URLs for drafts**: push the draft (still
+  `draft: true`) to a branch → open a PR → Vercel comments with a
+  preview URL. Drafts don't show on the home page or RSS but are
+  reachable at their direct URL.
+- **Deploy logs / build failures**: each deployment's log lives in
+  the Deployments tab — that's where any Astro build errors show up.
+
+## If DNS ever needs changing
+
+Hover → *Domain Details for cihago.com* → DNS tab. The records Vercel
+needs are documented in your Vercel project's *Settings → Domains*
+section. If anything breaks, Vercel's Domains panel will flag it and
+tell you exactly what record to set.
 
 ---
 
-## Things that need explicit attention before launch
+## Things worth doing sometime soon
 
-- `astro.config.mjs` → `site: 'https://cihago.example'` is a
-  placeholder. Update before launch (RSS + sitemap + canonical URLs
-  depend on it).
-- Real bio/about copy if you want it on `/about/`.
-- Replace the three Lorem Ipsum seed posts with real ones (or delete
-  them).
+- Replace the empty home page with a real first post — right now the
+  list is blank.
+- Flesh out the About page if the current short copy needs more.
+- Consider adding an `og:image` (a simple 1200×630 PNG at
+  `public/og-default.png` plus one line in `BaseHead.astro`) — social
+  link previews look bare without one.
