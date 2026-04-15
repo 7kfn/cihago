@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+---
+<BaseLayout
+  title="About"
+  description="What CIHAGO is, what it's for, and where the name comes from."
+>
+  <article class="page">
+    <h1>About CIHAGO</h1>
+
+    <p>
+      <strong>CIHAGO</strong> stands for <em>Can I Have A Go</em>.
+      It's a small, slow blog about making the future a better place to
+      live in &mdash; and an invitation, mostly to the author and
+      occasionally to the reader, to actually <em>have a go</em> at things
+      rather than just talk about them.
+    </p>
+
+    <p>
+      The best way to follow along is <a href="/rss.xml">RSS</a> &mdash;
+      see <a href="/why-rss/">Why RSS?</a> for the case.
+    </p>
+
+    <h2>Appearance</h2>
+    <p>
+      The site follows your browser's light/dark setting by default.
+      Override it here if you'd rather pick:
+    </p>
+    <ThemeToggle />
+  </article>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Why RSS?"
+  description="Why RSS is the best way to follow CIHAGO — and most independent writing on the open web."
+>
+  <article class="page">
+    <h1>Why RSS?</h1>
+
+    <p>
+      RSS is the quiet way the open web still works. It's a small file every
+      blog publishes that lists its recent posts. You point a <em>reader</em>
+      at it once, and from then on new writing arrives in your reader the
+      way new mail arrives in your inbox &mdash; in chronological order,
+      without an algorithm deciding what you should care about today.
+    </p>
+
+    <h2>Why it matters</h2>
+    <ul>
+      <li><strong>You own the stream.</strong> No platform sits between you and the writers you've chosen.</li>
+      <li><strong>No ranking, no ads, no nudges.</strong> Posts arrive in the order they were written.</li>
+      <li><strong>Nothing tracks you.</strong> Your reader fetches a public file. The publisher doesn't know who's subscribed.</li>
+      <li><strong>It's durable.</strong> RSS has worked the same way for over twenty years. The blog you subscribe to today will still reach you the same way in 2030.</li>
+    </ul>
+
+    <h2>How to subscribe to CIHAGO</h2>
+    <ol>
+      <li>Pick a reader. Good free options: <a href="https://feedly.com" target="_blank" rel="noopener noreferrer">Feedly</a>, <a href="https://newsblur.com" target="_blank" rel="noopener noreferrer">NewsBlur</a>, <a href="https://netnewswire.com" target="_blank" rel="noopener noreferrer">NetNewsWire</a> (Mac/iOS), or any modern email client that supports feeds.</li>
+      <li>
+        Add this URL: <code>{new URL('/rss.xml', Astro.site).toString()}</code>
+      </li>
+      <li>That's it. New posts will show up automatically.</li>
+    </ol>
+
+    <p>
+      If you've never used RSS before, treat it as a small act of
+      reclaiming your attention. It costs nothing and it works.
+    </p>
+  </article>
+</BaseLayout>

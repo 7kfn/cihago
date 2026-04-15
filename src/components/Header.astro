@@ -1,0 +1,57 @@
+---
+import { SITE_TITLE } from '../consts';
+---
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a href="/" class="wordmark" aria-label={`${SITE_TITLE} — home`}>{SITE_TITLE}</a>
+
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-label="Open menu"
+      aria-controls="primary-nav"
+      aria-expanded="false"
+    >
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+    </button>
+
+    <nav id="primary-nav" class="primary" aria-label="Primary" data-open="false">
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+      <a href="/why-rss/">Why RSS</a>
+      <a href="/search/">Search</a>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var btn = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('primary-nav');
+    if (!btn || !nav) return;
+
+    function setOpen(open) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      nav.setAttribute('data-open', open ? 'true' : 'false');
+    }
+
+    btn.addEventListener('click', function () {
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+    });
+
+    nav.addEventListener('click', function (e) {
+      if (e.target && e.target.tagName === 'A') setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+  })();
+</script>

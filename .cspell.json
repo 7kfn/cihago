@@ -1,0 +1,29 @@
+{
+  "version": "0.2",
+  "language": "en-GB",
+  "import": ["@cspell/dict-lorem-ipsum/cspell-ext.json"],
+  "dictionaryDefinitions": [
+    {
+      "name": "cihago",
+      "path": "./.cspell-words.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": ["cihago", "lorem-ipsum"],
+  "ignorePaths": [
+    "node_modules/**",
+    "dist/**",
+    ".astro/**",
+    "public/fonts/**",
+    "package-lock.json",
+    "*.lock"
+  ],
+  "ignoreRegExpList": [
+    "/href=\"[^\"]*\"/",
+    "/src=\"[^\"]*\"/",
+    "/`[^`]+`/",
+    "/```[\\s\\S]*?```/",
+    "/\\b[a-f0-9]{6,}\\b/i"
+  ],
+  "minWordLength": 4
+}

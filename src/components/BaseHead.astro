@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+import ThemeScript from './ThemeScript.astro';
+import { SITE_TITLE } from '../consts';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: Date;
+}
+
+const { title, description, ogType = 'website', publishedTime } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const fullTitle = title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;
+---
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+<ThemeScript />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="preload" href="/fonts/iAWriterQuattroS-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="theme-color" content="#fafafa" id="meta-theme-color" />
+<meta name="apple-mobile-web-app-title" content="CIHAGO" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="alternate" type="application/rss+xml" title={`${SITE_TITLE} — RSS`} href={new URL('/rss.xml', Astro.site).toString()} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />

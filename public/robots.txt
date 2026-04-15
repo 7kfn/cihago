@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cihago.com/sitemap-index.xml

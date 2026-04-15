@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Not found"
+  description="That page doesn't exist on CIHAGO."
+>
+  <article class="page page--404">
+    <p class="code-404">404</p>
+    <h1>Not found</h1>
+    <p>
+      That page isn't here. It may have moved, or it may never have existed.
+    </p>
+    <p>
+      <a href="/">&larr; Back to the home page</a>
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .page--404 { text-align: center; padding: 2rem 0; }
+  .code-404 {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 12vw, 5.5rem);
+    line-height: 1;
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+</style>

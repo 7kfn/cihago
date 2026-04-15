@@ -1,0 +1,69 @@
+---
+// Tri-state theme switch: Auto · Light · Dark.
+// Persists the user's choice to localStorage via window.__cihagoTheme.
+---
+<div class="theme-toggle" role="radiogroup" aria-label="Theme">
+  <span class="theme-toggle__label">Theme</span>
+  <div class="theme-toggle__group" data-theme-toggle>
+    <button type="button" role="radio" aria-checked="false" data-mode="auto" tabindex="0">
+      Auto
+    </button>
+    <button type="button" role="radio" aria-checked="false" data-mode="light" tabindex="-1">
+      Light
+    </button>
+    <button type="button" role="radio" aria-checked="false" data-mode="dark" tabindex="-1">
+      Dark
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var group = document.querySelector('[data-theme-toggle]');
+    if (!group) return;
+    var buttons = Array.prototype.slice.call(group.querySelectorAll('button[data-mode]'));
+
+    function paint(mode) {
+      buttons.forEach(function (btn) {
+        var active = btn.dataset.mode === mode;
+        btn.setAttribute('aria-checked', active ? 'true' : 'false');
+        btn.tabIndex = active ? 0 : -1;
+      });
+    }
+
+    function pickNext(current) {
+      var order = ['auto', 'light', 'dark'];
+      return order[(order.indexOf(current) + 1) % order.length];
+    }
+
+    paint((window.__cihagoTheme && window.__cihagoTheme.get()) || 'auto');
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var mode = btn.dataset.mode;
+        if (window.__cihagoTheme) window.__cihagoTheme.set(mode);
+        paint(mode);
+      });
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          var current = (window.__cihagoTheme && window.__cihagoTheme.get()) || 'auto';
+          var next = pickNext(current);
+          if (window.__cihagoTheme) window.__cihagoTheme.set(next);
+          paint(next);
+          var target = group.querySelector('[data-mode="' + next + '"]');
+          if (target) target.focus();
+        }
+      });
+    });
+
+    // Keep in sync if another tab changes the preference.
+    window.addEventListener('cihago:theme-change', function (e) {
+      paint(e.detail || 'auto');
+    });
+    window.addEventListener('storage', function (e) {
+      if (e.key !== 'cihago-theme') return;
+      paint(e.newValue === 'light' || e.newValue === 'dark' ? e.newValue : 'auto');
+    });
+  })();
+</script>

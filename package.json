@@ -1,0 +1,27 @@
+{
+  "name": "cihago",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build && pagefind --site dist",
+    "preview": "astro preview",
+    "astro": "astro",
+    "new": "node scripts/new-post.mjs",
+    "check": "node scripts/pre-publish.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/rss": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@cspell/dict-lorem-ipsum": "^4.0.5",
+    "cspell": "^10.0.0",
+    "pagefind": "^1.1.0",
+    "write-good": "^1.0.8"
+  }
+}
