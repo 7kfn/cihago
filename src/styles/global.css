@@ -464,6 +464,75 @@ article.post blockquote {
 }
 article.post ul, article.post ol { padding-left: 1.25rem; }
 
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+article.post header .tags { margin-top: 0.6rem; }
+a.tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.15rem 0.45rem;
+  line-height: 1.4;
+}
+a.tag:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+/* Tag index page */
+ul.tag-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+ul.tag-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+ul.tag-list a {
+  font-size: 1rem;
+}
+.tag-count {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Footnotes (GFM [^1] syntax) */
+article.post .footnotes {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+article.post .footnotes ol { padding-left: 1.25rem; }
+article.post .footnotes p { margin: 0.25rem 0; }
+article.post .footnotes .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+article.post [data-footnote-ref] { text-decoration: none; }
+article.post [data-footnote-backref] { text-decoration: none; }
+
 .post-back {
   margin: 2.5rem 0 0;
   padding-top: 1.25rem;

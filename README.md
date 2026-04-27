@@ -4,6 +4,16 @@
 
 Self-hosted Astro site. System fonts. RSS, sitemap, and Pagefind search built in.
 
+## Drafts
+
+Posts in `src/content/blog/` marked `draft: true` are exactly that — drafts. Half-formed
+ideas, rough notes, things I'm turning over. They don't appear on the live site, but
+they are visible here in the repo.
+
+Don't read them as finished positions. They might not even be positions I hold by the
+time you're reading this. In fact, they might not even be positions I held at the time
+I wrote them! They're thinking-in-progress, nothing more.
+
 ## Quick start
 
 ```bash

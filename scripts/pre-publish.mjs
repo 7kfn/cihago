@@ -21,7 +21,7 @@ const BLOG = join(ROOT, 'src/content/blog');
 const PAGES = join(ROOT, 'src/pages');
 const PUBLIC = join(ROOT, 'public');
 
-const STATIC_ROUTES = new Set(['/', '/about/', '/why-rss/', '/search/', '/404/', '/rss.xml', '/sitemap-index.xml']);
+const STATIC_ROUTES = new Set(['/', '/about/', '/why-rss/', '/search/', '/tags/', '/404/', '/rss.xml', '/sitemap-index.xml']);
 
 const c = {
   red:   (s) => `\x1b[31m${s}\x1b[0m`,
@@ -50,6 +50,7 @@ async function checkPosts() {
   if (!files.length) return warn('No posts found.');
 
   const slugs = new Set();
+  const tags = new Set();
 
   for (const f of files) {
     const path = join(BLOG, f);
@@ -68,9 +69,18 @@ async function checkPosts() {
     if (fm.draft === 'true' || fm.draft === true) {
       warn(`${where}: still draft: true (won't appear on home page or RSS)`);
     }
+
+    // Collect tags for link checking (parse YAML array from raw source)
+    const tagMatch = src.match(/^tags:\s*\[([^\]]*)\]/m);
+    if (tagMatch) {
+      for (const t of tagMatch[1].split(',')) {
+        const tag = t.trim().replace(/^["']|["']$/g, '');
+        if (tag) tags.add(`/tags/${tag}/`);
+      }
+    }
   }
   if (errors === 0) ok(`${files.length} post(s) checked`);
-  return slugs;
+  return { slugs, tags };
 }
 
 // Tiny YAML-ish frontmatter parser. Handles only the keys we use.
@@ -89,7 +99,7 @@ function parseFrontmatter(src) {
 }
 
 // ─── 2. Internal links ──────────────────────────────────────────────────────
-async function checkInternalLinks(blogSlugs) {
+async function checkInternalLinks(blogSlugs, tagSlugs) {
   header('Internal links');
   const targets = await collectAllFiles([BLOG, PAGES]);
   const linkRe = /\]\((\/[^)\s#?]*)/g;     // markdown:  ](/path
@@ -102,7 +112,7 @@ async function checkInternalLinks(blogSlugs) {
     for (const [, link] of matches) {
       count++;
       if (link.startsWith('//')) continue; // protocol-relative external
-      if (!await linkResolves(link, blogSlugs)) {
+      if (!await linkResolves(link, blogSlugs, tagSlugs)) {
         fail(`${rel(f)}: broken internal link → ${link}`);
       }
     }
@@ -113,10 +123,11 @@ async function checkInternalLinks(blogSlugs) {
 // Paths generated at build time (not present in source). Treat as valid.
 const BUILD_GENERATED_PREFIXES = ['/pagefind/', '/_astro/'];
 
-async function linkResolves(link, blogSlugs) {
+async function linkResolves(link, blogSlugs, tagSlugs) {
   const norm = link.endsWith('/') || link.includes('.') ? link : `${link}/`;
   if (STATIC_ROUTES.has(norm)) return true;
   if (blogSlugs.has(norm)) return true;
+  if (tagSlugs.has(norm)) return true;
   if (BUILD_GENERATED_PREFIXES.some((p) => link.startsWith(p))) return true;
   // public/ assets (images, fonts, robots, favicon, rss.xml, etc.)
   const publicPath = join(PUBLIC, link.replace(/^\//, ''));
@@ -180,8 +191,10 @@ async function checkProse() {
 }
 
 // ─── Run ────────────────────────────────────────────────────────────────────
-const slugs = await checkPosts();
-await checkInternalLinks(slugs || new Set());
+const result = await checkPosts();
+const slugs = result?.slugs || new Set();
+const tags = result?.tags || new Set();
+await checkInternalLinks(slugs, tags);
 checkSpelling();
 await checkProse();
 

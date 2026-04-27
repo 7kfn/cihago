@@ -6,9 +6,10 @@ interface Props {
   description: string;
   pubDate: Date;
   updatedDate?: Date;
+  tags?: string[];
 }
 
-const { title, description, pubDate, updatedDate } = Astro.props;
+const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
 ---
@@ -20,6 +21,13 @@ const fmt = (d: Date) =>
         <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
         {updatedDate && <> · updated <time datetime={updatedDate.toISOString()}>{fmt(updatedDate)}</time></>}
       </p>
+      {tags.length > 0 && (
+        <p class="tags">
+          {tags.map((tag) => (
+            <a href={`/tags/${tag}/`} class="tag">{tag}</a>
+          ))}
+        </p>
+      )}
     </header>
     <slot />
     {/* Comments will live here in future. Recommended: Cusdis (anonymous-friendly). */}
